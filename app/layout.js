@@ -1,7 +1,7 @@
-// app/layout.js
-import '../styles/global.css';
-import Providers from './providers'; // Ensure this path is correct
-import Navbar from '@/components/Navbar'; // Ensure this path is correct
+import '../styles/global.css'; 
+import Providers from './providers';
+import Navbar from '@/components/Navbar';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'MindSpace - Reflect and Grow', // Enhanced title
@@ -14,19 +14,51 @@ export default function RootLayout({ children }) {
       <head>
         {/* Google Fonts - Inter for a modern look */}
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-        {/*
-          IMPORTANT: The Lucide React UMD script below is NOT needed and causes conflicts
-          when using lucide-react as an npm package with dynamic imports.
-          It has been removed.
-        */}
       </head>
-      <body className="font-inter antialiased bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+      <body>
         <Providers>
-          <Navbar /> {/* This is where your Navbar component is rendered */}
-          {/* Main content area with responsive padding */}
-          <main className="flex-grow container mx-auto px-4 py-8 sm:px-6 lg:px-8">
-            {children}
-          </main>
+          {/* Sidebar */}
+          <aside className="sidebar">
+            <div className="sidebar-logo">
+              <span>🧘‍♂️</span>
+              <Link
+                href="/"
+                className="bg-transparent border-none text-white font-semibold cursor-pointer sidebar-link"
+                style={{ padding: 0, margin: 0, font: 'inherit', textDecoration: 'none' }}
+              >
+                MindSpace
+              </Link>
+            </div>
+            <nav className="sidebar-nav">
+              <Link href="/journal" className="sidebar-link">
+                Journal
+              </Link>
+              <Link href="/journal/new" className="sidebar-link">
+                New Entry
+              </Link>
+              <Link href="/analyze" className="sidebar-link">
+                AI Reflection
+              </Link>
+              <Link href="/settings" className="sidebar-link">
+                Settings
+              </Link>
+              <div className="sidebar-logout">
+                <Link href="/logout" className="sidebar-link">
+                  Logout
+                </Link>
+              </div>
+            </nav>
+          </aside>
+          {/* Main Content */}
+          <div className="flex-1 flex flex-col min-h-screen" style={{ marginLeft: '260px' }}>
+            <Navbar />
+            {/* Main content area with responsive padding */}
+            <main className="container mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-12 gap-8">
+              <div className="md:col-span-12">
+                {children}
+              </div>
+            </main>
+          </div>
         </Providers>
       </body>
     </html>

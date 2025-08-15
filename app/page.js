@@ -2,82 +2,67 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]/route';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
 
   return (
-    <div className="flex flex-col items-center justify-center px-4 py-10 min-h-screen bg-gray-50">
-      <div className="relative w-full max-w-4xl h-[400px] rounded-lg overflow-hidden shadow-lg">
-        <img
-          src="/image.jpg"
-          alt="Background"
-          className="absolute inset-0 w-full h-full object-cover"
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center justify-center mt-8">
+      {/* Illustration Side */}
+      <div className="hidden md:flex items-center justify-center">
+        <Image
+          src="/healing.jpg"
+          alt="Mindfulness"
+          width={400}
+          height={500}
+          className="rounded-2xl shadow-xl object-cover"
+          style={{ maxHeight: '500px', maxWidth: '400px', borderRadius: '2rem' }}
+          priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/20 to-white/40 backdrop-blur-sm" />
-        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 animate-fade-in">
-          <h1 className="text-4xl font-extrabold text-gray-900 mb-4">
-            Welcome to <span className="text-indigo-700">MindSpace 🧘‍♀️</span>
-          </h1>
-          <p className="text-lg text-gray-800 mb-6 max-w-2xl">
-            Reconnect with your inner self. MindSpace is a peaceful corner of the internet
-            where you can reflect, grow, and find clarity through journaling.
-          </p>
-
+      </div>
+      {/* Hero Card Side */}
+      <div className="card flex flex-col items-center justify-center text-center dark:bg-[#23272f] dark:text-[#e6f4ea]">
+        <h1 className="text-4xl md:text-5xl font-bold text-[#3B7A57] dark:text-[#f6b93b] mb-4 font-poppins">
+          Welcome to MindSpace 🧘‍♂️
+        </h1>
+        <p className="text-lg text-[#23423a] dark:text-[#e6f4ea] mb-8 max-w-2xl leading-relaxed font-lato">
+          Reconnect with your inner self. MindSpace is a peaceful corner of the internet
+          where you can reflect, grow, and find clarity through journaling.
+        </p>
+        <div className="flex flex-col items-center gap-4 w-full">
           {session ? (
             <>
               <Link
                 href="/journal/new"
-                className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-6 rounded transition duration-300 shadow-md"
+                className="bg-gradient-to-r from-[#F6B93B] to-[#F9D423] text-white font-semibold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105 hover:shadow-xl text-lg"
               >
                 Write a Journal Entry
               </Link>
-              <Link
-                href="/journal"
-                className="mt-4 text-blue-600 underline hover:text-blue-800 text-sm"
-              >
-                📓 View All Entries
-              </Link>
+              <div className="flex flex-row gap-8 justify-center mt-2">
+                <Link
+                  href="/journal"
+                  className="flex items-center gap-2 text-[#3B7A57] dark:text-[#f6b93b] hover:underline text-base font-medium transition"
+                >
+                  📓 View All Entries
+                </Link>
+                <Link
+                  href="/analyze"
+                  className="flex items-center gap-2 text-[#3B7A57] dark:text-[#f6b93b] hover:underline text-base font-medium transition"
+                >
+                  ✨ Try AI Reflection
+                </Link>
+              </div>
             </>
           ) : (
             <Link
               href="/signup"
-              className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded transition duration-300 shadow-md"
+              className="bg-gradient-to-r from-[#3B7A57] to-[#F6B93B] text-white font-semibold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105 hover:shadow-xl text-lg"
             >
               Get Started
             </Link>
           )}
-
-          <Link
-            href="/analyze"
-            className="mt-4 text-indigo-600 underline hover:text-indigo-800 text-sm"
-          >
-            ✨ Try AI Reflection
-          </Link>
         </div>
-      </div>
-
-      {/* Features Section */}
-      <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-10 w-full max-w-5xl text-center animate-fade-in delay-200">
-        {[
-          {
-            title: "Reflect",
-            text: "Pause and explore your thoughts and emotions in a safe, judgment-free zone.",
-          },
-          {
-            title: "Process",
-            text: "Uncover patterns, insights, and inner truths by journaling regularly.",
-          },
-          {
-            title: "Grow",
-            text: "Cultivate mindfulness and emotional awareness to support your personal growth.",
-          },
-        ].map((item) => (
-          <div key={item.title}>
-            <h2 className="text-xl font-semibold mb-2">{item.title}</h2>
-            <p className="text-gray-700">{item.text}</p>
-          </div>
-        ))}
       </div>
     </div>
   );
