@@ -1,0 +1,61 @@
+/* styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom font setup for Inter */
+@layer base {
+  html {
+    font-family: "Inter", sans-serif;
+  }
+}
+
+/* Optional calming UI tweaks */
+a {
+  transition: color 0.3s ease, background-color 0.3s ease, transform 0.2s ease;
+}
+
+button {
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Custom animation for mobile menu dropdown */
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-down {
+  animation: fade-in-down 0.3s ease-out forwards;
+}
+
+/* Ensure the body background and text colors are consistent */
+body {
+  /* Matcha Green background color */
+  background-color: #d6e8d6; /* A pleasant matcha green */
+  color: #2c3e50; /* Darker text for readability, adjust if needed for contrast */
+}
+
+/* Additional global styles for better aesthetics (optional) */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #334155; /* Slightly darker headings */
+}
+
+/* Add a subtle focus ring for accessibility */
+*:focus {
+  outline: 2px solid #6366f1; /* Indigo focus ring */
+  outline-offset: 2px;
+  border-radius: 4px;
+}

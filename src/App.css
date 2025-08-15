@@ -1,0 +1,126 @@
+/* ...existing code... */
+
+:root {
+  --primary-bg: #f6f8fa;
+  --primary-accent: #3bb6b6;
+  --secondary-accent: #6c7a89;
+  --button-primary-bg: #3bb6b6;
+  --button-primary-text: #fff;
+  --button-secondary-bg: transparent;
+  --button-secondary-border: #3bb6b6;
+  --button-secondary-text: #3bb6b6;
+  --font-heading: "Inter", Arial, sans-serif;
+  --font-body: "Roboto", Georgia, serif;
+}
+
+/* Typography */
+body {
+  font-family: var(--font-body);
+  background-color: var(--primary-bg);
+  color: var(--secondary-accent);
+  /* ...existing code... */
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  /* ...existing code... */
+}
+
+/* Hero/Header Section */
+.hero {
+  background: url("/assets/hero-nature.jpg") center/cover no-repeat;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 24px rgba(60, 120, 120, 0.08);
+}
+
+/* Layout and Spacing */
+.main-content {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(60, 120, 120, 0.06);
+}
+
+/* Button Design */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 2rem;
+}
+
+.btn-primary {
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(60, 120, 120, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: #2c8c8c;
+}
+
+.btn-secondary {
+  background: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+  border: 2px solid var(--button-secondary-border);
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.btn-secondary:hover {
+  border-color: #2c8c8c;
+  color: #2c8c8c;
+}
+
+/* Sign Up Button */
+.signup-btn {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  border-radius: 8px;
+  padding: 0.7rem 1.4rem;
+  font-size: 1rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(60, 120, 120, 0.08);
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.signup-btn:hover {
+  background: #2c8c8c;
+}
+
+/* ...existing code... */

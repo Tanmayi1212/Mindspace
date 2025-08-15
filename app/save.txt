@@ -1,0 +1,137 @@
+import Link from 'next/link';
+
+export default function Home() {
+  return (
+    <div className="flex flex-col items-center justify-center px-4 py-10 min-h-screen bg-gray-50">
+
+      {/* Hero Section */}
+      <div className="relative w-full max-w-4xl h-[400px] rounded-lg overflow-hidden shadow-lg">
+        {/* Background Image */}
+        <img
+          src="/image.jpg"
+          alt="Background"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/20 to-white/40 backdrop-blur-sm" />
+
+        {/* Content */}
+        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 animate-fade-in">
+          <h1 className="text-4xl font-extrabold text-gray-900 mb-4">
+            Welcome to <span className="text-indigo-700">MindSpace 🧘‍♀️</span>
+          </h1>
+          <p className="text-lg text-gray-800 mb-6 max-w-2xl">
+            Reconnect with your inner self. MindSpace is a peaceful corner of the internet
+            where you can reflect, grow, and find clarity through journaling.
+          </p>
+
+          <Link
+            href="/journal/new"
+            className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-6 rounded transition duration-300 shadow-md"
+          >
+            Write a Journal Entry
+          </Link>
+
+          <Link
+            href="/analyze"
+            className="mt-4 text-indigo-600 underline hover:text-indigo-800 text-sm"
+          >
+            ✨ Try AI Reflection
+          </Link>
+
+          <Link
+            href="/journal"
+            className="mt-2 text-blue-600 underline hover:text-blue-800 text-sm"
+          >
+            📓 View All Entries
+          </Link>
+        </div>
+      </div>
+
+      {/* Features Section */}
+      <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-10 w-full max-w-5xl text-center animate-fade-in delay-200">
+        {[
+          {
+            title: "Reflect",
+            text: "Pause and explore your thoughts and emotions in a safe, judgment-free zone.",
+          },
+          {
+            title: "Process",
+            text: "Uncover patterns, insights, and inner truths by journaling regularly.",
+          },
+          {
+            title: "Grow",
+            text: "Cultivate mindfulness and emotional awareness to support your personal growth.",
+          },
+        ].map((item) => (
+          <div key={item.title}>
+            <h2 className="text-xl font-semibold mb-2">{item.title}</h2>
+            <p className="text-gray-700">{item.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+
+// app/layout.js
+import '../styles/globals.css';
+
+import Link from 'next/link';
+
+export const metadata = {
+  title: 'MindSpace – Your Mental Health Journal',
+  description: 'Reflect, express, and grow. A peaceful place for your thoughts.',
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body className="bg-[#fdfcf9] text-[#2c3e50] font-sans min-h-screen">
+        <nav className="bg-[#e8f4f2] text-[#2c3e50] px-6 py-4 shadow-md flex justify-between items-center">
+          <Link href="/" className="text-xl font-semibold tracking-wide">
+            🧘 MindSpace
+          </Link>
+          <div className="flex gap-6 items-center text-sm font-medium">
+            <Link href="/journal" className="hover:text-[#4B9C8E] transition">
+              Journal
+            </Link>
+            <Link href="/journal/new" className="hover:text-[#4B9C8E] transition">
+              New Entry
+            </Link>
+          </div>
+        </nav>
+
+        <main className="max-w-3xl mx-auto px-4 py-8">
+          {children}
+        </main>
+      </body>
+    </html>
+  );
+}
+
+
+navbar
+'use client';
+
+import Link from 'next/link';
+
+export default function ClientNav() {
+  return (
+    <nav className="bg-calm text-white px-6 py-4 shadow-md flex justify-between items-center">
+      <Link href="/" className="text-lg font-semibold">
+        🧘 MindSpace
+      </Link>
+      <div className="flex gap-6 items-center">
+        <Link href="/journal" className="hover:underline">
+          Journal
+        </Link>
+        <Link href="/journal/new" className="hover:underline">
+          New Entry
+        </Link>
+      </div>
+    </nav>
+  );
+}
