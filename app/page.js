@@ -55,12 +55,20 @@ export default async function Home() {
               </div>
             </>
           ) : (
-            <Link
-              href="/signup"
-              className="bg-gradient-to-r from-[#3B7A57] to-[#F6B93B] text-white font-semibold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105 hover:shadow-xl text-lg"
-            >
-              Get Started
-            </Link>
+            <>
+              <Link
+                href="/signup"
+                className="bg-gradient-to-r from-[#3B7A57] to-[#F6B93B] text-white font-semibold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105 hover:shadow-xl text-lg"
+              >
+                Sign Up
+              </Link>
+              <Link
+                href="/signin"
+                className="mt-2 px-8 py-3 rounded-full bg-white text-[#3B7A57] font-semibold border border-[#3B7A57] hover:bg-[#f6b93b] hover:text-[#23272f] transition text-lg"
+              >
+                Sign In
+              </Link>
+            </>
           )}
         </div>
       </div>

@@ -21,16 +21,48 @@ header {
   color: #23423a;
 }
 
+/* Remove or comment out previous header a/button styles to avoid conflicts */
+/*
+header a,
+header button {
+  background: #f6b93b;
+  color: #23272f;
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 0.5rem 1.2rem;
+  margin-left: 0.5rem;
+  box-shadow: 0 2px 8px rgba(246, 185, 59, 0.08);
+  border: none;
+  transition: background 0.2s, color 0.2s;
+  display: inline-flex;
+  align-items: center;
+}
+
+header a:hover,
+header button:hover {
+  background: #3b7a57;
+  color: #fff;
+}
+
+.dark header a,
+.dark header button {
+  background: #f6b93b;
+  color: #23272f;
+}
+
+.dark header a:hover,
+.dark header button:hover {
+  background: #3b7a57;
+  color: #fff;
+}
+*/
+
+/* Dark mode styles */
 .dark header {
   background-color: #23272f;
   color: #f6b93b;
 }
 
-/* Dark mode styles */
-.dark body {
-  background-color: #23272f;
-  color: #e6f4ea; /* Softer green for dark mode text */
-}
 .dark .sidebar {
   background: #1a1d23;
   color: #f6f6f6;
@@ -116,14 +148,27 @@ header {
   font-size: 1rem;
   font-weight: 500;
   color: #fff;
-  transition: background 0.2s, box-shadow 0.2s;
+  background: #3b7a57;
+  transition: background 0.2s, box-shadow 0.2s, color 0.2s;
 }
 
 .sidebar-link:hover,
 .sidebar-link.active {
   background: #f6b93b;
-  color: #3b7a57;
+  color: #23272f;
   box-shadow: 0 2px 8px rgba(246, 185, 59, 0.12);
+}
+
+/* Dark mode sidebar links */
+.dark .sidebar-link {
+  background: #3b7a57;
+  color: #fff;
+}
+
+.dark .sidebar-link:hover,
+.dark .sidebar-link.active {
+  background: #f6b93b;
+  color: #23272f;
 }
 
 .sidebar-logout {
@@ -207,4 +252,35 @@ textarea {
   .hero {
     padding: 2rem 1rem;
   }
+}
+
+/* Settings form input text visibility */
+input,
+select,
+textarea {
+  color: #23423a;
+  background: #f8fdf9;
+}
+
+.dark input,
+.dark select,
+.dark textarea {
+  color: #e6f4ea !important;
+  background: #23272f !important;
+  border-color: #f6b93b !important;
+}
+
+input::placeholder,
+select::placeholder,
+textarea::placeholder {
+  color: #6c7a89;
+}
+
+.dark input::placeholder,
+.dark select::placeholder,
+.dark textarea::placeholder {
+  color: #b7c9a8;
+}
+.dark textarea::placeholder {
+  color: #b7c9a8;
 }

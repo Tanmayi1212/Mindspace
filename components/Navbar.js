@@ -11,14 +11,39 @@ export default function Navbar() {
   const { data: session } = useSession();
 
   return (
-    <header className="sticky top-0 left-0 w-full z-40 shadow-sm flex items-center justify-start px-6 h-16 bg-white dark:bg-[#23272f]">
+    <header className="sticky top-0 left-0 w-full z-40 shadow-sm flex items-center justify-between px-6 h-16 bg-white dark:bg-[#23272f]">
       <div className="flex items-center gap-4">
-        <button className="p-2 rounded-full hover:bg-[#f6b93b] transition">
-          {Bell && <Bell size={20} className="text-[#23423a] dark:text-[#f6b93b]" />}
+        <button className="p-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white hover:bg-[#2e5d43] transition" aria-label="Notifications">
+          {Bell && <Bell size={20} />}
         </button>
-        <Link href="/settings" className="p-2 rounded-full hover:bg-[#f6b93b] transition">
-          {Settings && <Settings size={20} className="text-[#23423a] dark:text-[#f6b93b]" />}
+        <Link href="/settings" className="p-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white hover:bg-[#2e5d43] transition" aria-label="Settings">
+          {Settings && <Settings size={20} />}
         </Link>
+      </div>
+      <div className="flex-1 flex items-center justify-center gap-4">
+        <Link href="/journal" className="px-6 py-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white font-semibold transition">
+          Journal
+        </Link>
+        <Link href="/journal/new" className="px-6 py-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white font-semibold transition">
+          New Entry
+        </Link>
+        <Link href="/analyze" className="px-6 py-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white font-semibold transition">
+          AI Reflection
+        </Link>
+        <Link href="/settings" className="px-6 py-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white font-semibold transition">
+          Settings
+        </Link>
+        <Link href="/signup" className="px-6 py-2 rounded bg-[#5cbf7c] dark:bg-[#5cbf7c] text-white font-semibold transition">
+          Sign Up
+        </Link>
+        <Link href="/signin" className="px-6 py-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white font-semibold transition">
+          Sign In
+        </Link>
+        {session && (
+          <Link href="/logout" className="px-6 py-2 rounded bg-[#2e5d43] dark:bg-[#f6b93b] text-white dark:text-[#23272f] font-semibold transition">
+            Logout
+          </Link>
+        )}
       </div>
     </header>
   );
