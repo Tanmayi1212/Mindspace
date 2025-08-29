@@ -54,6 +54,9 @@ export default function SignInPage() {
           <span className="text-[#3B7A57] dark:text-[#f6b93b]">Don't have an account?</span>
           <a href="/signup" className="ml-2 text-[#f6b93b] font-semibold hover:underline">Sign Up</a>
         </div>
+        <div className="mt-2 text-center">
+          <a href="/forgot-password" className="text-blue-600 font-semibold hover:underline">Forgot Password?</a>
+        </div>
       </form>
     </div>
   );

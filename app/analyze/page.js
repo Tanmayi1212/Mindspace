@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const moodOptions = [
   { emoji: '😊', label: 'Happy' },
@@ -26,6 +26,36 @@ Use the user's current mood to personalize your response if it's provided.`,
   const [mood, setMood] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [theme, setTheme] = useState('light');
+
+  useEffect(() => {
+    // Check localStorage for theme first
+    const getTheme = () => {
+      if (typeof window === 'undefined') return 'light';
+      return localStorage.getItem('theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    };
+    setTheme(getTheme());
+
+    // Listen for theme changes in localStorage (from settings page or elsewhere)
+    const onStorage = (e) => {
+      if (e.key === 'theme' && e.newValue) setTheme(e.newValue);
+    };
+    window.addEventListener('storage', onStorage);
+
+    // Listen for system theme changes only if not set in localStorage
+    let mq;
+    if (!localStorage.getItem('theme')) {
+      mq = window.matchMedia('(prefers-color-scheme: dark)');
+      const handler = (e) => setTheme(e.matches ? 'dark' : 'light');
+      mq.addEventListener('change', handler);
+      return () => {
+        window.removeEventListener('storage', onStorage);
+        mq.removeEventListener('change', handler);
+      };
+    }
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -65,20 +95,42 @@ Use the user's current mood to personalize your response if it's provided.`,
   };
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Reflective Journal</h1>
-
+    <div
+      style={{
+        ...styles.container,
+        backgroundColor: theme === 'dark' ? '#23272f' : '#fdfcfb', // ensure correct color
+        color: theme === 'dark' ? '#e6f4ea' : '#333',
+      }}
+    >
+      {/* TEMPORARY MESSAGE FOR TESTING */}
+      <div style={{ padding: 12, background: '#F6B93B', color: '#23272f', borderRadius: 8, marginBottom: 16, textAlign: 'center', fontWeight: 'bold' }}>
+        TEMPORARY TEST MESSAGE: If you see this, your changes are working!
+      </div>
+      <h1 style={{ ...styles.title, color: theme === 'dark' ? '#f6b93b' : '#4b6650' }}>Reflective Journal</h1>
       {/* Mood Check-In */}
       <div style={styles.moodContainer}>
-        <p style={styles.moodPrompt}>How are you feeling today?</p>
+        <p style={{ ...styles.moodPrompt, color: theme === 'dark' ? '#f6b93b' : '#4b6650' }}>
+          How are you feeling today?
+        </p>
         <div style={styles.emojiRow}>
           {moodOptions.map((option) => (
             <button
               key={option.label}
               onClick={() => setMood(option)}
               style={{
-                ...styles.emojiButton,
-                backgroundColor: mood?.label === option.label ? '#d8f3dc' : '#fff',
+                border: theme === 'dark' ? '1.5px solid #f6b93b' : '1.5px solid #F6B93B',
+                borderRadius: '50%',
+                padding: 10,
+                cursor: 'pointer',
+                width: 50,
+                height: 50,
+                backgroundColor:
+                  theme === 'dark'
+                    ? (mood?.label === option.label ? '#3B7A57' : '#23272f')
+                    : (mood?.label === option.label ? '#F9D423' : '#F6B93B'),
+                color: theme === 'dark' ? '#f6b93b' : '#fff',
+                transition: 'background 0.2s, color 0.2s',
+                boxShadow: mood?.label === option.label ? '0 0 0 2px #f6b93b' : 'none',
               }}
             >
               <span style={{ fontSize: 24 }}>{option.emoji}</span>
@@ -86,14 +138,21 @@ Use the user's current mood to personalize your response if it's provided.`,
           ))}
         </div>
         {mood && (
-          <p style={styles.selectedMood}>
+          <p style={{ ...styles.selectedMood, color: theme === 'dark' ? '#f6b93b' : '#555' }}>
             You selected: <strong>{mood.emoji} {mood.label}</strong>
           </p>
         )}
       </div>
 
       {/* Chat Display */}
-      <div style={styles.chatBox}>
+      <div
+        style={{
+          ...styles.chatBox,
+          backgroundColor: theme === 'dark' ? '#1a1d23' : '#ffffff',
+          border: theme === 'dark' ? '1px solid #f6b93b' : '1px solid #ddd',
+          color: theme === 'dark' ? '#e6f4ea' : '#333',
+        }}
+      >
         {messages.slice(1).map((msg, index) => (
           <div
             key={index}
@@ -122,10 +181,23 @@ Use the user's current mood to personalize your response if it's provided.`,
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Type how you're feeling..."
-        style={styles.textarea}
+        style={{
+          ...styles.textarea,
+          backgroundColor: theme === 'dark' ? '#1a1d23' : '#fff',
+          color: theme === 'dark' ? '#e6f4ea' : '#333',
+          border: theme === 'dark' ? '1px solid #f6b93b' : '1px solid #ccc',
+        }}
       />
 
-      <button onClick={sendMessage} disabled={loading || !input.trim()} style={styles.button}>
+      <button
+        onClick={sendMessage}
+        disabled={loading || !input.trim()}
+        style={{
+          ...styles.button,
+          backgroundColor: theme === 'dark' ? '#3B7A57' : '#6da77d',
+          color: theme === 'dark' ? '#f6b93b' : '#fff',
+        }}
+      >
         {loading ? 'Sending...' : 'Send'}
       </button>
 
@@ -157,6 +229,7 @@ const styles = {
   moodPrompt: {
     fontSize: 16,
     marginBottom: 10,
+    color: '#4b6650',
   },
   emojiRow: {
     display: 'flex',
@@ -165,13 +238,15 @@ const styles = {
     flexWrap: 'wrap',
   },
   emojiButton: {
-    border: '1px solid #ccc',
+    border: '1px solid #F6B93B',
     borderRadius: '50%',
     padding: 10,
     cursor: 'pointer',
     width: 50,
     height: 50,
-    backgroundColor: '#fff',
+    backgroundColor: '#F6B93B',
+    color: '#fff',
+    transition: 'background 0.2s, color 0.2s',
   },
   selectedMood: {
     marginTop: 10,
@@ -186,6 +261,7 @@ const styles = {
     borderRadius: 8,
     backgroundColor: '#ffffff',
     marginBottom: 10,
+    color: '#333',
   },
   messageBubble: {
     display: 'inline-block',
@@ -204,6 +280,8 @@ const styles = {
     border: '1px solid #ccc',
     resize: 'none',
     marginBottom: 10,
+    backgroundColor: '#fff',
+    color: '#333',
   },
   button: {
     width: '100%',

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation'; // Add Next.js router
 
 // Mock user data (replace with real data from your auth/session)
 const mockUser = {
@@ -19,6 +20,7 @@ export default function SettingsPage() {
     notifications: mockUser.notifications,
     theme: mockUser.theme,
   });
+  const router = useRouter();
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -49,6 +51,21 @@ export default function SettingsPage() {
     // Optionally show a success message
   };
 
+  const handleLogout = () => {
+    // TODO: Clear auth/session here (e.g., remove token, clear context)
+    router.push('/login'); // Redirect to login/signup page
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) return;
+    const res = await fetch('/api/auth/delete-account', { method: 'DELETE' });
+    if (res.ok) {
+      router.push('/signup');
+    } else {
+      alert('Failed to delete account.');
+    }
+  };
+
   return (
     <div className="card max-w-xl mx-auto mt-8">
       <h1 className="text-2xl font-bold mb-6 text-[#3B7A57]">Settings</h1>
@@ -75,6 +92,18 @@ export default function SettingsPage() {
             onClick={handleEdit}
           >
             Update Settings
+          </button>
+          <button
+            className="bg-red-500 text-white rounded-full px-6 py-2 font-semibold mt-2 hover:bg-red-700 transition"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+          <button
+            className="bg-red-700 text-white rounded-full px-6 py-2 font-semibold mt-2 hover:bg-red-900 transition"
+            onClick={handleDeleteAccount}
+          >
+            Delete Account
           </button>
         </div>
       ) : (

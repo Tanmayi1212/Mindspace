@@ -21,28 +21,33 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="flex-1 flex items-center justify-center gap-4">
-        <Link href="/journal" className="px-6 py-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white font-semibold transition">
-          Journal
-        </Link>
-        <Link href="/journal/new" className="px-6 py-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white font-semibold transition">
-          New Entry
-        </Link>
-        <Link href="/analyze" className="px-6 py-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white font-semibold transition">
-          AI Reflection
-        </Link>
-        <Link href="/settings" className="px-6 py-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white font-semibold transition">
-          Settings
-        </Link>
-        <Link href="/signup" className="px-6 py-2 rounded bg-[#5cbf7c] dark:bg-[#5cbf7c] text-white font-semibold transition">
-          Sign Up
-        </Link>
-        <Link href="/signin" className="px-6 py-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white font-semibold transition">
-          Sign In
-        </Link>
-        {session && (
-          <Link href="/logout" className="px-6 py-2 rounded bg-[#2e5d43] dark:bg-[#f6b93b] text-white dark:text-[#23272f] font-semibold transition">
-            Logout
-          </Link>
+        {session ? (
+          <>
+            <Link href="/journal" className="px-6 py-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white font-semibold transition">
+              Journal
+            </Link>
+            <Link href="/journal/new" className="px-6 py-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white font-semibold transition">
+              New Entry
+            </Link>
+            <Link href="/analyze" className="px-6 py-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white font-semibold transition">
+              AI Reflection
+            </Link>
+            <Link href="/settings" className="px-6 py-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white font-semibold transition">
+              Settings
+            </Link>
+            <Link href="/logout" className="px-6 py-2 rounded bg-[#2e5d43] dark:bg-[#f6b93b] text-white dark:text-[#23272f] font-semibold transition">
+              Logout
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link href="/signup" className="px-6 py-2 rounded bg-[#5cbf7c] dark:bg-[#5cbf7c] text-white font-semibold transition">
+              Sign Up
+            </Link>
+            <Link href="/signin" className="px-6 py-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white font-semibold transition">
+              Sign In
+            </Link>
+          </>
         )}
       </div>
     </header>

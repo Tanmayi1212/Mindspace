@@ -4,7 +4,9 @@ import { useRouter } from 'next/navigation';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [theme, setTheme] = useState('light');
   const [error, setError] = useState('');
   const router = useRouter();
 
@@ -12,7 +14,7 @@ export default function SignupPage() {
     e.preventDefault();
     const res = await fetch('/api/auth/signup', {
       method: 'POST',
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, name, theme }),
       headers: { 'Content-Type': 'application/json' },
     });
 
@@ -29,6 +31,15 @@ export default function SignupPage() {
       <form onSubmit={handleSubmit} className="card max-w-md w-full mx-auto p-8 rounded-2xl shadow-lg bg-white dark:bg-[#23272f]">
         <h1 className="text-3xl font-bold mb-6 text-[#3B7A57] dark:text-[#f6b93b] text-center">Sign Up</h1>
         {error && <p className="text-red-500 mb-3 text-center">{error}</p>}
+        <label className="block mb-2 font-semibold text-[#3B7A57] dark:text-[#f6b93b]" htmlFor="name">Name</label>
+        <input
+          id="name"
+          type="text"
+          placeholder="Your Name"
+          className="w-full p-3 border rounded-lg mb-4 bg-[#f8fdf9] dark:bg-[#1a1d23] text-[#23423a] dark:text-[#e6f4ea] focus:outline-none focus:ring-2 focus:ring-[#f6b93b]"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
         <label className="block mb-2 font-semibold text-[#3B7A57] dark:text-[#f6b93b]" htmlFor="email">Email</label>
         <input
           id="email"
@@ -47,6 +58,16 @@ export default function SignupPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <label className="block mb-2 font-semibold text-[#3B7A57] dark:text-[#f6b93b]" htmlFor="theme">Theme</label>
+        <select
+          id="theme"
+          className="w-full p-3 border rounded-lg mb-6 bg-[#f8fdf9] dark:bg-[#1a1d23] text-[#23423a] dark:text-[#e6f4ea] focus:outline-none focus:ring-2 focus:ring-[#f6b93b]"
+          value={theme}
+          onChange={(e) => setTheme(e.target.value)}
+        >
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
         <button className="w-full py-3 rounded-full bg-gradient-to-r from-[#F6B93B] to-[#F9D423] text-white font-semibold shadow-lg hover:scale-105 hover:shadow-xl transition text-lg">
           Sign Up
         </button>
