@@ -26,7 +26,15 @@ export default async function Home() {
         <h1 className="text-4xl md:text-5xl font-bold text-[#3B7A57] dark:text-[#f6b93b] mb-4 font-poppins">
           Welcome to MindSpace 🧘‍♂️
         </h1>
-        <p className="text-lg text-[#23423a] dark:text-[#e6f4ea] mb-8 max-w-2xl leading-relaxed font-lato">
+        <p
+          className="text-base font-medium transition text-[#3B7A57] dark:text-[#f6b93b] mb-8 max-w-2xl leading-relaxed font-lato"
+          style={{
+            fontWeight: 500,
+            letterSpacing: '0.01em',
+            textUnderlineOffset: '4px',
+            cursor: 'default',
+          }}
+        >
           Reconnect with your inner self. MindSpace is a peaceful corner of the internet
           where you can reflect, grow, and find clarity through journaling.
         </p>

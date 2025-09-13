@@ -15,15 +15,28 @@ export default function JournalList({ entries }) {
   return (
     <div className="space-y-4">
       {entries.map(entry => (
-        <div key={entry._id} className="bg-white p-4 rounded shadow-sm border">
+        <div
+          key={entry._id}
+          style={{
+            background: 'var(--bg-card)',
+            color: 'var(--text-main)',
+            padding: '1rem',
+            borderRadius: '0.75rem',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+            border: `1px solid var(--border-main)`,
+            transition: 'background 0.3s, color 0.3s',
+          }}
+        >
           <h2 className="text-lg font-semibold">{entry.title}</h2>
-          <p className="text-gray-600">{entry.content}</p>
-          <div className="mt-2 flex gap-4 text-sm text-blue-500">
-            <a href={`/journal/${entry._id}/edit`} className="hover:underline">Edit</a>
-            <button onClick={() => handleDelete(entry._id)} className="text-red-500 hover:underline">
-              Delete
-            </button>
-          </div>
+          <p style={{ color: 'var(--text-main)' }}>{entry.content}</p>
+          <a href={`/journal/${entry._id}/edit`} className="hover:underline text-blue-500 text-sm mr-4">Edit</a>
+          <button
+            onClick={() => handleDelete(entry._id)}
+            className="text-red-500 hover:underline text-sm"
+            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+          >
+            Delete
+          </button>
         </div>
       ))}
     </div>

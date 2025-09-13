@@ -11,7 +11,12 @@ export default function Navbar() {
   const { data: session } = useSession();
 
   return (
-    <header className="sticky top-0 left-0 w-full z-40 shadow-sm flex items-center justify-between px-6 h-16 bg-white dark:bg-[#23272f]">
+    <header className="sticky top-0 left-0 w-full z-40 shadow-sm flex items-center justify-between px-6 h-16"
+      style={{
+        background: 'var(--bg-navbar)',
+        color: 'var(--text-navbar)',
+      }}
+    >
       <div className="flex items-center gap-4">
         <button className="p-2 rounded bg-[#3b7a57] dark:bg-[#3b7a57] text-white hover:bg-[#2e5d43] transition" aria-label="Notifications">
           {Bell && <Bell size={20} />}

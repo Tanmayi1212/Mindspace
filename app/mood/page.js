@@ -54,11 +54,13 @@ export default function MoodCheckIn() {
         {MOOD_OPTIONS.map((option) => (
           <button
             key={option.label}
-            style={{
-              ...styles.emojiButton,
-              backgroundColor: mood === option.label ? '#e0f7fa' : '#fff',
-            }}
+            className={`mood-icon${mood === option.label ? ' selected' : ''}`}
             onClick={() => handleMoodSelect(option.label)}
+            style={{
+              width: 60,
+              height: 60,
+              margin: '0 8px',
+            }}
           >
             <span style={{ fontSize: 28 }}>{option.emoji}</span>
           </button>
@@ -101,19 +103,21 @@ const styles = {
     margin: '40px auto',
     padding: 20,
     borderRadius: 10,
-    background: '#f9fdfc',
+    background: 'var(--bg-card)',
     boxShadow: '0 4px 8px rgba(0,0,0,0.05)',
     fontFamily: 'Arial, sans-serif',
+    transition: 'background 0.3s, color 0.3s',
   },
   title: {
     fontSize: '1.8em',
     textAlign: 'center',
-    color: '#1976d2',
+    color: 'var(--text-heading)',
   },
   subtext: {
     textAlign: 'center',
     marginBottom: 20,
     fontSize: '1em',
+    color: 'var(--text-main)',
   },
   emojiRow: {
     display: 'flex',
@@ -123,31 +127,34 @@ const styles = {
   emojiButton: {
     padding: 10,
     borderRadius: 10,
-    border: '1px solid #ccc',
+    border: '1px solid var(--border-main)',
     cursor: 'pointer',
     width: 60,
     height: 60,
-    background: '#fff',
+    background: 'var(--bg-input)',
     transition: 'background 0.2s',
   },
   resultBox: {
     marginTop: 20,
-    background: '#e3f2fd',
+    background: 'var(--bg-main)',
     padding: 15,
     borderRadius: 8,
+    transition: 'background 0.3s, color 0.3s',
   },
   checkboxLabel: {
     display: 'block',
     marginTop: 10,
     fontSize: 14,
+    color: 'var(--text-main)',
   },
   logButton: {
     marginTop: 10,
     padding: '8px 14px',
     borderRadius: 6,
-    backgroundColor: '#1976d2',
-    color: 'white',
+    backgroundColor: 'var(--bg-button)',
+    color: 'var(--text-button)',
     border: 'none',
     cursor: 'pointer',
+    transition: 'background 0.2s, color 0.2s',
   },
 };

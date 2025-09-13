@@ -101,15 +101,15 @@ Use the user's current mood to personalize your response if it's provided.`,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: theme === 'dark' ? '#181818' : '#fdfcfb',
-        color: theme === 'dark' ? '#fff' : '#333',
+        backgroundColor: 'var(--bg-main)',
+        color: 'var(--text-main)',
       }}
     >
       <div
         style={{
           width: '100%',
           maxWidth: 600,
-          background: theme === 'dark' ? '#181818' : '#fff',
+          background: 'var(--bg-card)',
           borderRadius: 24,
           boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
           padding: '2.5rem 2rem',
@@ -121,16 +121,14 @@ Use the user's current mood to personalize your response if it's provided.`,
       >
         <h1 style={{
           ...styles.title,
-          color: theme === 'dark' ? '#fff' : '#4b6650',
-          backgroundColor: theme === 'dark' ? '#181818' : 'transparent',
-          padding: theme === 'dark' ? '16px 0 8px 0' : '0',
-          borderRadius: theme === 'dark' ? '16px' : '0',
+          color: 'var(--text-heading)',
+          backgroundColor: 'transparent',
         }}>Reflective Journal</h1>
         {/* Mood Check-In */}
         <div style={styles.moodContainer}>
           <p style={{
             ...styles.moodPrompt,
-            color: theme === 'dark' ? '#fff' : '#4b6650'
+            color: 'var(--text-heading)'
           }}>
             How are you feeling today?
           </p>
@@ -145,7 +143,7 @@ Use the user's current mood to personalize your response if it's provided.`,
                 style={{
                   borderWidth: '2px',
                   borderStyle: 'solid',
-                  borderColor: theme === 'dark' ? '#fff' : '#F6B93B',
+                  borderColor: 'var(--text-heading)',
                   borderRadius: 16,
                   padding: 10,
                   cursor: 'pointer',
@@ -162,6 +160,7 @@ Use the user's current mood to personalize your response if it's provided.`,
                   boxShadow: mood?.label === option.label ? (theme === 'dark' ? '0 0 0 2px #fff' : '0 0 0 2px #F6B93B') : 'none',
                   outline: 'none',
                 }}
+                className="mood-icon"
               >
                 {option.emoji}
               </button>

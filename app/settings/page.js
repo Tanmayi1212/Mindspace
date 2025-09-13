@@ -21,6 +21,7 @@ export default function SettingsPage() {
         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     };
     setTheme(getTheme());
+    document.documentElement.classList.toggle('dark', getTheme() === 'dark');
     async function fetchUser() {
       if (!session?.user?.email) return;
       setLoading(true);
@@ -39,6 +40,10 @@ export default function SettingsPage() {
     }
     fetchUser();
   }, [session]);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, [theme]);
 
   const handleUpdate = async e => {
     e.preventDefault();
@@ -80,7 +85,8 @@ export default function SettingsPage() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: theme === 'dark' ? '#3e2723' : '#e6f4ea', // brownish dark
+        background: 'var(--bg-main)',
+        transition: 'background 0.3s',
       }}
     >
       <form
@@ -88,13 +94,14 @@ export default function SettingsPage() {
         style={{
           width: '100%',
           maxWidth: 400,
-          background: theme === 'dark' ? '#4e342e' : '#fff', // lighter brown for card
+          background: 'var(--bg-card)',
           borderRadius: 24,
           boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
           padding: '2.5rem 2rem',
           display: 'flex',
           flexDirection: 'column',
           gap: '1.2rem',
+          transition: 'background 0.3s, color 0.3s',
         }}
       >
         <h1
@@ -103,21 +110,22 @@ export default function SettingsPage() {
             fontWeight: 700,
             marginBottom: 10,
             textAlign: 'center',
-            color: theme === 'dark' ? '#f6b93b' : '#F6B93B',
+            color: 'var(--text-heading)',
             letterSpacing: 1,
+            transition: 'color 0.3s',
           }}
         >
           Settings
         </h1>
         {message && (
-          <p style={{ textAlign: 'center', color: theme === 'dark' ? '#f6b93b' : '#3B7A57', marginBottom: 8 }}>
+          <p style={{ textAlign: 'center', color: 'var(--text-heading)', marginBottom: 8 }}>
             {message}
           </p>
         )}
         <div>
           <label
             htmlFor="name"
-            style={{ fontWeight: 600, color: theme === 'dark' ? '#f6b93b' : '#3B7A57', marginBottom: 4, display: 'block' }}
+            style={{ fontWeight: 600, color: 'var(--text-heading)', marginBottom: 4, display: 'block', transition: 'color 0.3s' }}
           >
             Name
           </label>
@@ -131,17 +139,18 @@ export default function SettingsPage() {
               width: '100%',
               padding: '0.75rem',
               borderRadius: 8,
-              border: '1px solid #d1e7dd',
-              background: theme === 'dark' ? '#3e2723' : '#f8fdf9', // match dark bg
-              color: theme === 'dark' ? '#f6b93b' : '#23423a',
+              border: `1px solid var(--border-main)`,
+              background: 'var(--bg-input)',
+              color: 'var(--text-main)',
               fontSize: 16,
+              transition: 'background 0.3s, color 0.3s, border-color 0.3s',
             }}
           />
         </div>
         <div>
           <label
             htmlFor="email"
-            style={{ fontWeight: 600, color: theme === 'dark' ? '#f6b93b' : '#3B7A57', marginBottom: 4, display: 'block' }}
+            style={{ fontWeight: 600, color: 'var(--text-heading)', marginBottom: 4, display: 'block', transition: 'color 0.3s' }}
           >
             Email
           </label>
@@ -154,17 +163,18 @@ export default function SettingsPage() {
               width: '100%',
               padding: '0.75rem',
               borderRadius: 8,
-              border: '1px solid #d1e7dd',
-              background: theme === 'dark' ? '#3e2723' : '#f8fdf9',
-              color: theme === 'dark' ? '#f6b93b' : '#23423a',
+              border: `1px solid var(--border-main)`,
+              background: 'var(--bg-input)',
+              color: 'var(--text-main)',
               fontSize: 16,
+              transition: 'background 0.3s, color 0.3s, border-color 0.3s',
             }}
           />
         </div>
         <div>
           <label
             htmlFor="theme"
-            style={{ fontWeight: 600, color: theme === 'dark' ? '#f6b93b' : '#3B7A57', marginBottom: 4, display: 'block' }}
+            style={{ fontWeight: 600, color: 'var(--text-heading)', marginBottom: 4, display: 'block', transition: 'color 0.3s' }}
           >
             Theme
           </label>
@@ -177,10 +187,11 @@ export default function SettingsPage() {
               width: '100%',
               padding: '0.75rem',
               borderRadius: 8,
-              border: '1px solid #d1e7dd',
-              background: theme === 'dark' ? '#3e2723' : '#f8fdf9',
-              color: theme === 'dark' ? '#f6b93b' : '#23423a',
+              border: `1px solid var(--border-main)`,
+              background: 'var(--bg-input)',
+              color: 'var(--text-main)',
               fontSize: 16,
+              transition: 'background 0.3s, color 0.3s, border-color 0.3s',
             }}
           >
             <option value="light">Light</option>
@@ -194,8 +205,8 @@ export default function SettingsPage() {
             width: '100%',
             padding: '0.9rem',
             borderRadius: 24,
-            background: 'linear-gradient(90deg, #F6B93B 0%, #F9D423 100%)',
-            color: '#fff',
+            background: 'var(--bg-button)',
+            color: 'var(--text-button)',
             fontWeight: 600,
             fontSize: 18,
             letterSpacing: 0.5,
@@ -203,7 +214,7 @@ export default function SettingsPage() {
             boxShadow: '0 2px 8px rgba(246,185,59,0.08)',
             marginTop: 10,
             cursor: loading ? 'not-allowed' : 'pointer',
-            transition: 'transform 0.1s',
+            transition: 'background 0.2s, color 0.2s, transform 0.1s',
           }}
         >
           {loading ? 'Saving...' : 'Update Settings'}
