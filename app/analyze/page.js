@@ -97,111 +97,150 @@ Use the user's current mood to personalize your response if it's provided.`,
   return (
     <div
       style={{
-        ...styles.container,
-        backgroundColor: theme === 'dark' ? '#23272f' : '#fdfcfb', // ensure correct color
-        color: theme === 'dark' ? '#e6f4ea' : '#333',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: theme === 'dark' ? '#181818' : '#fdfcfb',
+        color: theme === 'dark' ? '#fff' : '#333',
       }}
     >
-      {/* TEMPORARY MESSAGE FOR TESTING */}
-      <div style={{ padding: 12, background: '#F6B93B', color: '#23272f', borderRadius: 8, marginBottom: 16, textAlign: 'center', fontWeight: 'bold' }}>
-        TEMPORARY TEST MESSAGE: If you see this, your changes are working!
-      </div>
-      <h1 style={{ ...styles.title, color: theme === 'dark' ? '#f6b93b' : '#4b6650' }}>Reflective Journal</h1>
-      {/* Mood Check-In */}
-      <div style={styles.moodContainer}>
-        <p style={{ ...styles.moodPrompt, color: theme === 'dark' ? '#f6b93b' : '#4b6650' }}>
-          How are you feeling today?
-        </p>
-        <div style={styles.emojiRow}>
-          {moodOptions.map((option) => (
-            <button
-              key={option.label}
-              onClick={() => setMood(option)}
-              style={{
-                border: theme === 'dark' ? '1.5px solid #f6b93b' : '1.5px solid #F6B93B',
-                borderRadius: '50%',
-                padding: 10,
-                cursor: 'pointer',
-                width: 50,
-                height: 50,
-                backgroundColor:
-                  theme === 'dark'
-                    ? (mood?.label === option.label ? '#3B7A57' : '#23272f')
-                    : (mood?.label === option.label ? '#F9D423' : '#F6B93B'),
-                color: theme === 'dark' ? '#f6b93b' : '#fff',
-                transition: 'background 0.2s, color 0.2s',
-                boxShadow: mood?.label === option.label ? '0 0 0 2px #f6b93b' : 'none',
-              }}
-            >
-              <span style={{ fontSize: 24 }}>{option.emoji}</span>
-            </button>
-          ))}
-        </div>
-        {mood && (
-          <p style={{ ...styles.selectedMood, color: theme === 'dark' ? '#f6b93b' : '#555' }}>
-            You selected: <strong>{mood.emoji} {mood.label}</strong>
-          </p>
-        )}
-      </div>
-
-      {/* Chat Display */}
       <div
         style={{
-          ...styles.chatBox,
-          backgroundColor: theme === 'dark' ? '#1a1d23' : '#ffffff',
-          border: theme === 'dark' ? '1px solid #f6b93b' : '1px solid #ddd',
-          color: theme === 'dark' ? '#e6f4ea' : '#333',
+          width: '100%',
+          maxWidth: 600,
+          background: theme === 'dark' ? '#181818' : '#fff',
+          borderRadius: 24,
+          boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
+          padding: '2.5rem 2rem',
+          margin: '2rem 0',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1.2rem',
         }}
       >
-        {messages.slice(1).map((msg, index) => (
-          <div
-            key={index}
-            style={{
-              margin: '10px 0',
-              textAlign: msg.role === 'user' ? 'right' : 'left',
-            }}
-          >
+        <h1 style={{
+          ...styles.title,
+          color: theme === 'dark' ? '#fff' : '#4b6650',
+          backgroundColor: theme === 'dark' ? '#181818' : 'transparent',
+          padding: theme === 'dark' ? '16px 0 8px 0' : '0',
+          borderRadius: theme === 'dark' ? '16px' : '0',
+        }}>Reflective Journal</h1>
+        {/* Mood Check-In */}
+        <div style={styles.moodContainer}>
+          <p style={{
+            ...styles.moodPrompt,
+            color: theme === 'dark' ? '#fff' : '#4b6650'
+          }}>
+            How are you feeling today?
+          </p>
+          <div style={{
+            ...styles.emojiRow,
+            marginBottom: 16,
+          }}>
+            {moodOptions.map((option) => (
+              <button
+                key={option.label}
+                onClick={() => setMood(option)}
+                style={{
+                  borderWidth: '2px',
+                  borderStyle: 'solid',
+                  borderColor: theme === 'dark' ? '#fff' : '#F6B93B',
+                  borderRadius: 16,
+                  padding: 10,
+                  cursor: 'pointer',
+                  width: 56,
+                  height: 56,
+                  backgroundColor:
+                    theme === 'dark'
+                      ? (mood?.label === option.label ? '#222' : '#181818')
+                      : (mood?.label === option.label ? '#F9D423' : '#F6B93B'),
+                  color: '#fff',
+                  fontWeight: 600,
+                  fontSize: 24,
+                  transition: 'background 0.2s, color 0.2s',
+                  boxShadow: mood?.label === option.label ? (theme === 'dark' ? '0 0 0 2px #fff' : '0 0 0 2px #F6B93B') : 'none',
+                  outline: 'none',
+                }}
+              >
+                {option.emoji}
+              </button>
+            ))}
+          </div>
+          {mood && (
+            <p style={{ ...styles.selectedMood, color: theme === 'dark' ? '#fff' : '#555' }}>
+              You selected: <strong>{mood.emoji} {mood.label}</strong>
+            </p>
+          )}
+        </div>
+        {/* Chat Display */}
+        <div
+          style={{
+            ...styles.chatBox,
+            backgroundColor: theme === 'dark' ? '#181818' : '#f8fdf9',
+            border: theme === 'dark' ? '1px solid #fff' : '1px solid #F6B93B',
+            color: theme === 'dark' ? '#fff' : '#333',
+            marginBottom: 10,
+            minHeight: 120,
+          }}
+        >
+          {messages.slice(1).map((msg, index) => (
             <div
+              key={index}
               style={{
-                ...styles.messageBubble,
-                backgroundColor: msg.role === 'user' ? '#d0f0c0' : '#f2f2f2',
+                margin: '10px 0',
+                textAlign: msg.role === 'user' ? 'right' : 'left',
               }}
             >
-              {msg.content}
+              <div
+                style={{
+                  ...styles.messageBubble,
+                  backgroundColor: theme === 'dark'
+                    ? (msg.role === 'user' ? '#222' : '#181818')
+                    : (msg.role === 'user' ? '#fffbe6' : '#f2f2f2'),
+                  color: theme === 'dark' ? '#fff' : '#333',
+                  border: theme === 'dark' ? '1px solid #333' : 'none',
+                }}
+              >
+                {msg.content}
+              </div>
             </div>
-          </div>
-        ))}
-        {loading && <p style={styles.typing}>✨ Listening with care...</p>}
+          ))}
+          {loading && <p style={{ ...styles.typing, color: theme === 'dark' ? '#fff' : '#888' }}>✨ Listening with care...</p>}
+        </div>
+        {/* Input Box */}
+        <textarea
+          rows={3}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Type how you're feeling..."
+          style={{
+            ...styles.textarea,
+            backgroundColor: theme === 'dark' ? '#181818' : '#fff',
+            color: theme === 'dark' ? '#fff' : '#333',
+            border: theme === 'dark' ? '1px solid #fff' : '1px solid #F6B93B',
+            marginBottom: 10,
+          }}
+        />
+        <button
+          onClick={sendMessage}
+          disabled={loading || !input.trim()}
+          style={{
+            ...styles.button,
+            backgroundColor: theme === 'dark' ? '#181818' : '#F6B93B',
+            color: '#fff',
+            fontWeight: 600,
+            fontSize: 18,
+            borderRadius: 16,
+            marginTop: 8,
+            border: theme === 'dark' ? '1.5px solid #fff' : 'none',
+          }}
+        >
+          {loading ? 'Sending...' : 'Send'}
+        </button>
+        {error && <div style={styles.error}>⚠️ {error}</div>}
       </div>
-
-      {/* Input Box */}
-      <textarea
-        rows={3}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Type how you're feeling..."
-        style={{
-          ...styles.textarea,
-          backgroundColor: theme === 'dark' ? '#1a1d23' : '#fff',
-          color: theme === 'dark' ? '#e6f4ea' : '#333',
-          border: theme === 'dark' ? '1px solid #f6b93b' : '1px solid #ccc',
-        }}
-      />
-
-      <button
-        onClick={sendMessage}
-        disabled={loading || !input.trim()}
-        style={{
-          ...styles.button,
-          backgroundColor: theme === 'dark' ? '#3B7A57' : '#6da77d',
-          color: theme === 'dark' ? '#f6b93b' : '#fff',
-        }}
-      >
-        {loading ? 'Sending...' : 'Send'}
-      </button>
-
-      {error && <div style={styles.error}>⚠️ {error}</div>}
     </div>
   );
 }
@@ -234,7 +273,7 @@ const styles = {
   emojiRow: {
     display: 'flex',
     justifyContent: 'center',
-    gap: 10,
+    gap: 16,
     flexWrap: 'wrap',
   },
   emojiButton: {
@@ -257,10 +296,8 @@ const styles = {
     maxHeight: '50vh',
     overflowY: 'auto',
     padding: 10,
-    border: '1px solid #ddd',
-    borderRadius: 8,
+    borderRadius: 12,
     backgroundColor: '#ffffff',
-    marginBottom: 10,
     color: '#333',
   },
   messageBubble: {
@@ -285,13 +322,14 @@ const styles = {
   },
   button: {
     width: '100%',
-    backgroundColor: '#6da77d',
+    backgroundColor: '#F6B93B',
     color: '#fff',
-    padding: 12,
+    padding: 14,
     border: 'none',
-    borderRadius: 6,
-    fontSize: 16,
+    borderRadius: 16,
+    fontSize: 18,
     cursor: 'pointer',
+    fontWeight: 600,
   },
   typing: {
     color: '#888',

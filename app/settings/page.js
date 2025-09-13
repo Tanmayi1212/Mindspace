@@ -2,53 +2,60 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; // Add Next.js router
-
-// Mock user data (replace with real data from your auth/session)
-const mockUser = {
-  name: 'Jane Doe',
-  email: 'jane@example.com',
-  notifications: 'all',
-  theme: 'light',
-};
+import { useSession } from 'next-auth/react';
 
 export default function SettingsPage() {
-  const [editing, setEditing] = useState(false);
-  const [form, setForm] = useState({
-    name: mockUser.name,
-    email: mockUser.email,
-    password: '',
-    notifications: mockUser.notifications,
-    theme: mockUser.theme,
-  });
+  const { data: session } = useSession();
   const router = useRouter();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [theme, setTheme] = useState('light');
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    if (e.target.name === 'theme') {
-      if (e.target.value === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    }
-  };
-
+  // Read theme from localStorage or system on mount
   useEffect(() => {
-    // On mount, set theme from form value
-    if (form.theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+    const getTheme = () => {
+      if (typeof window === 'undefined') return 'light';
+      return localStorage.getItem('theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    };
+    setTheme(getTheme());
+    async function fetchUser() {
+      if (!session?.user?.email) return;
+      setLoading(true);
+      const res = await fetch('/api/auth/user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: session.user.email }),
+      });
+      if (res.ok) {
+        const user = await res.json();
+        setName(user.name || '');
+        setEmail(user.email || '');
+        setTheme(user.theme || 'light');
+      }
+      setLoading(false);
     }
-  }, [form.theme]);
+    fetchUser();
+  }, [session]);
 
-  const handleEdit = () => setEditing(true);
-
-  const handleSubmit = e => {
+  const handleUpdate = async e => {
     e.preventDefault();
-    // TODO: Save settings to backend
-    setEditing(false);
-    // Optionally show a success message
+    setLoading(true);
+    const res = await fetch('/api/auth/update-user', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, name, theme }),
+    });
+    if (res.ok) {
+      setMessage('Settings updated!');
+      localStorage.setItem('theme', theme); // persist theme
+      window.location.reload(); // Reload the page to apply theme globally
+    } else {
+      setMessage('Failed to update settings');
+    }
+    setLoading(false);
   };
 
   const handleLogout = () => {
@@ -67,117 +74,141 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="card max-w-xl mx-auto mt-8">
-      <h1 className="text-2xl font-bold mb-6 text-[#3B7A57]">Settings</h1>
-      {!editing ? (
-        <div className="flex flex-col gap-6">
-          <div>
-            <span className="block font-semibold mb-2">Profile Name</span>
-            <span>{form.name}</span>
-          </div>
-          <div>
-            <span className="block font-semibold mb-2">Email</span>
-            <span>{form.email}</span>
-          </div>
-          <div>
-            <span className="block font-semibold mb-2">Notifications</span>
-            <span>{form.notifications}</span>
-          </div>
-          <div>
-            <span className="block font-semibold mb-2">Theme</span>
-            <span>{form.theme}</span>
-          </div>
-          <button
-            className="bg-[#3B7A57] text-white rounded-full px-6 py-2 font-semibold mt-4 hover:bg-[#2e5d43] transition"
-            onClick={handleEdit}
+    <div
+      style={{
+        minHeight: '80vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: theme === 'dark' ? '#3e2723' : '#e6f4ea', // brownish dark
+      }}
+    >
+      <form
+        onSubmit={handleUpdate}
+        style={{
+          width: '100%',
+          maxWidth: 400,
+          background: theme === 'dark' ? '#4e342e' : '#fff', // lighter brown for card
+          borderRadius: 24,
+          boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
+          padding: '2.5rem 2rem',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1.2rem',
+        }}
+      >
+        <h1
+          style={{
+            fontSize: 28,
+            fontWeight: 700,
+            marginBottom: 10,
+            textAlign: 'center',
+            color: theme === 'dark' ? '#f6b93b' : '#F6B93B',
+            letterSpacing: 1,
+          }}
+        >
+          Settings
+        </h1>
+        {message && (
+          <p style={{ textAlign: 'center', color: theme === 'dark' ? '#f6b93b' : '#3B7A57', marginBottom: 8 }}>
+            {message}
+          </p>
+        )}
+        <div>
+          <label
+            htmlFor="name"
+            style={{ fontWeight: 600, color: theme === 'dark' ? '#f6b93b' : '#3B7A57', marginBottom: 4, display: 'block' }}
           >
-            Update Settings
-          </button>
-          <button
-            className="bg-red-500 text-white rounded-full px-6 py-2 font-semibold mt-2 hover:bg-red-700 transition"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-          <button
-            className="bg-red-700 text-white rounded-full px-6 py-2 font-semibold mt-2 hover:bg-red-900 transition"
-            onClick={handleDeleteAccount}
-          >
-            Delete Account
-          </button>
+            Name
+          </label>
+          <input
+            id="name"
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            disabled={loading}
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              borderRadius: 8,
+              border: '1px solid #d1e7dd',
+              background: theme === 'dark' ? '#3e2723' : '#f8fdf9', // match dark bg
+              color: theme === 'dark' ? '#f6b93b' : '#23423a',
+              fontSize: 16,
+            }}
+          />
         </div>
-      ) : (
-        <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-          <div>
-            <label className="block font-semibold mb-2" htmlFor="name">Profile Name</label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              className="w-full border rounded px-3 py-2"
-              value={form.name}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label className="block font-semibold mb-2" htmlFor="email">Email</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              className="w-full border rounded px-3 py-2"
-              value={form.email}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label className="block font-semibold mb-2" htmlFor="password">Password</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              className="w-full border rounded px-3 py-2"
-              value={form.password}
-              onChange={handleChange}
-              placeholder="New Password"
-            />
-          </div>
-          <div>
-            <label className="block font-semibold mb-2" htmlFor="notifications">Notifications</label>
-            <select
-              id="notifications"
-              name="notifications"
-              className="w-full border rounded px-3 py-2"
-              value={form.notifications}
-              onChange={handleChange}
-            >
-              <option value="all">All</option>
-              <option value="important">Only Important</option>
-              <option value="none">None</option>
-            </select>
-          </div>
-          <div>
-            <label className="block font-semibold mb-2" htmlFor="theme">Theme</label>
-            <select
-              id="theme"
-              name="theme"
-              className="w-full border rounded px-3 py-2"
-              value={form.theme}
-              onChange={handleChange}
-            >
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-              <option value="system">System</option>
-            </select>
-          </div>
-          <button
-            type="submit"
-            className="bg-[#3B7A57] text-white rounded-full px-6 py-2 font-semibold mt-4 hover:bg-[#2e5d43] transition"
+        <div>
+          <label
+            htmlFor="email"
+            style={{ fontWeight: 600, color: theme === 'dark' ? '#f6b93b' : '#3B7A57', marginBottom: 4, display: 'block' }}
           >
-            Save Changes
-          </button>
-        </form>
-      )}
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            disabled
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              borderRadius: 8,
+              border: '1px solid #d1e7dd',
+              background: theme === 'dark' ? '#3e2723' : '#f8fdf9',
+              color: theme === 'dark' ? '#f6b93b' : '#23423a',
+              fontSize: 16,
+            }}
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="theme"
+            style={{ fontWeight: 600, color: theme === 'dark' ? '#f6b93b' : '#3B7A57', marginBottom: 4, display: 'block' }}
+          >
+            Theme
+          </label>
+          <select
+            id="theme"
+            value={theme}
+            onChange={e => setTheme(e.target.value)}
+            disabled={loading}
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              borderRadius: 8,
+              border: '1px solid #d1e7dd',
+              background: theme === 'dark' ? '#3e2723' : '#f8fdf9',
+              color: theme === 'dark' ? '#f6b93b' : '#23423a',
+              fontSize: 16,
+            }}
+          >
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </div>
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            width: '100%',
+            padding: '0.9rem',
+            borderRadius: 24,
+            background: 'linear-gradient(90deg, #F6B93B 0%, #F9D423 100%)',
+            color: '#fff',
+            fontWeight: 600,
+            fontSize: 18,
+            letterSpacing: 0.5,
+            border: 'none',
+            boxShadow: '0 2px 8px rgba(246,185,59,0.08)',
+            marginTop: 10,
+            cursor: loading ? 'not-allowed' : 'pointer',
+            transition: 'transform 0.1s',
+          }}
+        >
+          {loading ? 'Saving...' : 'Update Settings'}
+        </button>
+      </form>
     </div>
   );
-}
+};

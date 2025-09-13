@@ -18,7 +18,16 @@ export default function AnalyzePage() {
       const sentimentResult = await analyzeEntry(entry);
       setSentiment(sentimentResult);
 
-      const reflection = await analyzeWithCohere(entry);
+      // Compose a therapist-style prompt
+      const therapistPrompt = `
+You are a compassionate and empathetic therapist. When someone shares their thoughts, you respond with understanding, console them, and encourage them to talk more about their feelings. Always be supportive and gentle.
+
+User: ${entry}
+Therapist:
+      `;
+
+      // Send the therapistPrompt to the AI reflection function
+      const reflection = await analyzeWithCohere(therapistPrompt);
       setAiReflection(reflection);
     } catch (err) {
       console.error(err);

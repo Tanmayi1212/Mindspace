@@ -15,10 +15,18 @@ export async function POST(req) {
 
     const messages = body.messages;
 
+    // Prepend therapist instruction to the last message
+    const therapistInstruction = "You are a compassionate and empathetic therapist. Console the user, encourage them to talk, and always respond with empathy and support.";
+    const lastMessage = messages[messages.length - 1];
+    const therapistMessage = {
+      ...lastMessage,
+      content: `${therapistInstruction}\n\nUser: ${lastMessage.content}\nTherapist:`
+    };
+
     const response = await cohere.chat({
       model: 'command-r-plus',
       temperature: 0.7,
-      message: messages[messages.length - 1].content,
+      message: therapistMessage.content,
       messageHistory: messages.slice(0, -1).map((msg) => ({
         role: msg.role,
         message: msg.content,
