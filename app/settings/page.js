@@ -15,13 +15,6 @@ export default function SettingsPage() {
 
   // Read theme from localStorage or system on mount
   useEffect(() => {
-    const getTheme = () => {
-      if (typeof window === 'undefined') return 'light';
-      return localStorage.getItem('theme') ||
-        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    };
-    setTheme(getTheme());
-    document.documentElement.classList.toggle('dark', getTheme() === 'dark');
     async function fetchUser() {
       if (!session?.user?.email) return;
       setLoading(true);
@@ -35,6 +28,9 @@ export default function SettingsPage() {
         setName(user.name || '');
         setEmail(user.email || '');
         setTheme(user.theme || 'light');
+        // Persist theme from DB to localStorage and html class
+        localStorage.setItem('theme', user.theme || 'light');
+        document.documentElement.classList.toggle('dark', (user.theme || 'light') === 'dark');
       }
       setLoading(false);
     }
@@ -42,6 +38,8 @@ export default function SettingsPage() {
   }, [session]);
 
   useEffect(() => {
+    // Always keep localStorage and html class in sync with theme state
+    localStorage.setItem('theme', theme);
     document.documentElement.classList.toggle('dark', theme === 'dark');
   }, [theme]);
 
