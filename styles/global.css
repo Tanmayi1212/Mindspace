@@ -251,7 +251,13 @@ button,
   }
 }
 .animate-fade-in-down {
-  animation: fade-in-down 0.3s ease-out forwards;
+  animation: fade-in-down 0.4s ease-out forwards;
+}
+
+*:focus {
+  outline: 2px solid var(--bg-button);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* Responsive tweaks */

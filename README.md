@@ -6,7 +6,7 @@ Reconnect with your inner self, reflect, grow, and find clarity.
 ## Why MindSpace?
 
 Modern life is stressful and fast-paced. MindSpace was created to help you slow down, check in with your feelings, and build a habit of self-reflection.  
-With secure journaling, mood tracking, and gentle AI support, MindSpace empowers you to nurture your mental wellness—privately and thoughtfully.
+With secure journaling, mood tracking, and gentle AI support, MindSpace empowers you to nurture your mental wellness, privately and thoughtfully.
 
 ## Features
 

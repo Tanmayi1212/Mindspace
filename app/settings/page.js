@@ -27,14 +27,23 @@ export default function SettingsPage() {
         const user = await res.json();
         setName(user.name || '');
         setEmail(user.email || '');
-        setTheme(user.theme || 'light');
-        // Persist theme from DB to localStorage and html class
+        setTheme(user.theme || localStorage.getItem('theme') || 'light');
         localStorage.setItem('theme', user.theme || 'light');
         document.documentElement.classList.toggle('dark', (user.theme || 'light') === 'dark');
       }
       setLoading(false);
     }
     fetchUser();
+
+    // Listen for theme changes from sidebar toggle
+    const onStorage = (e) => {
+      if (e.key === 'theme' && e.newValue) {
+        setTheme(e.newValue);
+        document.documentElement.classList.toggle('dark', e.newValue === 'dark');
+      }
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
   }, [session]);
 
   useEffect(() => {

@@ -14,6 +14,20 @@ export default function JournalList({ entries }) {
 
   return (
     <div className="space-y-4">
+      {entries.length === 0 && (
+        <div style={{
+          background: 'var(--bg-card)',
+          color: 'var(--text-main)',
+          padding: '2rem',
+          borderRadius: '1rem',
+          textAlign: 'center',
+          fontWeight: 500,
+          boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+          opacity: 0.8,
+        }}>
+          No journal entries yet. Start your journey by writing your first entry!
+        </div>
+      )}
       {entries.map(entry => (
         <div
           key={entry._id}
@@ -24,7 +38,8 @@ export default function JournalList({ entries }) {
             borderRadius: '0.75rem',
             boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
             border: `1px solid var(--border-main)`,
-            transition: 'background 0.3s, color 0.3s',
+            transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+            animation: 'fade-in-down 0.4s',
           }}
         >
           <h2 className="text-lg font-semibold">{entry.title}</h2>

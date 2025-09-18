@@ -235,8 +235,22 @@ Use the user's current mood to personalize your response if it's provided.`,
             marginTop: 8,
             border: theme === 'dark' ? '1.5px solid #fff' : 'none',
           }}
+          aria-busy={loading}
+          aria-label="Send and Analyze"
         >
-          {loading ? 'Sending...' : 'Send'}
+          {loading ? (
+            <span>
+              <span className="animate-spin inline-block mr-2" style={{
+                border: '2px solid #fff',
+                borderTop: '2px solid #6366f1',
+                borderRadius: '50%',
+                width: 18,
+                height: 18,
+                verticalAlign: 'middle',
+              }} />
+              Sending...
+            </span>
+          ) : 'Send'}
         </button>
         {error && <div style={styles.error}>⚠️ {error}</div>}
       </div>
@@ -339,5 +353,16 @@ const styles = {
     marginTop: 10,
     color: 'red',
     fontSize: 14,
+  },
+  analyzeButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '12px 16px',
+    borderRadius: 16,
+    fontSize: 18,
+    fontWeight: 600,
+    cursor: 'pointer',
+    transition: 'background 0.2s',
   },
 };

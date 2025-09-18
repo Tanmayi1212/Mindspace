@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <Providers>
-          {/* Hamburger menu (hide when sidebar is open) */}
+          {/* Hamburger menu (show only when sidebar is closed) */}
           {!sidebarOpen && (
             <button
               aria-label="Open menu"
@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
                 position: 'fixed',
                 top: 18,
                 left: 18,
-                zIndex: 100,
+                zIndex: 200,
                 background: 'var(--bg-button)',
                 color: 'var(--text-button)',
                 border: 'none',
@@ -71,7 +71,6 @@ export default function RootLayout({ children }) {
                   height: 2,
                   background: 'currentColor',
                   borderRadius: 2,
-                  content: '""',
                   display: 'block',
                 }} />
                 <span style={{
@@ -82,22 +81,34 @@ export default function RootLayout({ children }) {
                   height: 2,
                   background: 'currentColor',
                   borderRadius: 2,
-                  content: '""',
                   display: 'block',
                 }} />
               </span>
             </button>
           )}
           {/* Sidebar */}
-          <aside className="sidebar">
+          <aside
+            className="sidebar"
+            style={{
+              left: sidebarOpen ? 0 : '-260px',
+              transition: 'left 0.3s',
+              zIndex: 201,
+              position: 'fixed',
+              top: 0,
+              height: '100vh',
+              width: 260,
+              background: 'var(--bg-sidebar)',
+              boxShadow: sidebarOpen ? '2px 0 12px rgba(0,0,0,0.08)' : 'none',
+            }}
+          >
             <div
               className="sidebar-logo"
               style={{
                 marginBottom: '2rem',
                 display: 'flex',
-                justifyContent: 'center', // center horizontally
+                justifyContent: 'center',
                 alignItems: 'center',
-                width: '100%', // take full sidebar width for centering
+                width: '100%',
               }}
             >
               <Link
@@ -141,8 +152,41 @@ export default function RootLayout({ children }) {
                 </Link>
               </div>
             </nav>
-            {/* Close button at bottom */}
-            <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+            {/* Toggle Theme and Close buttons at the bottom, stacked vertically */}
+            <div style={{
+              position: 'absolute',
+              bottom: '2rem',
+              left: 0,
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '1rem',
+            }}>
+              <button
+                aria-label="Toggle theme"
+                onClick={() => {
+                  const newTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+                  localStorage.setItem('theme', newTheme);
+                  document.documentElement.classList.toggle('dark', newTheme === 'dark');
+                  // Update theme state in settings page if present
+                  window.dispatchEvent(new Event('storage')); // trigger storage event for listeners
+                }}
+                style={{
+                  background: 'var(--bg-button)',
+                  color: 'var(--text-button)',
+                  border: 'none',
+                  borderRadius: '9999px',
+                  padding: '0.5rem 1.5rem',
+                  fontWeight: 600,
+                  fontSize: '1rem',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 8px rgba(246,185,59,0.12)',
+                  width: '80%',
+                }}
+              >
+                Toggle Theme
+              </button>
               <button
                 onClick={() => setSidebarOpen(false)}
                 style={{
@@ -155,7 +199,7 @@ export default function RootLayout({ children }) {
                   fontSize: '1rem',
                   cursor: 'pointer',
                   boxShadow: '0 2px 8px rgba(246,185,59,0.12)',
-                  marginTop: '1rem',
+                  width: '80%',
                 }}
               >
                 Close

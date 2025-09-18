@@ -60,13 +60,25 @@ export default function MoodCheckIn() {
               width: 60,
               height: 60,
               margin: '0 8px',
+              boxShadow: mood === option.label ? '0 0 0 4px var(--bg-button)' : 'none',
+              transform: mood === option.label ? 'scale(1.1)' : 'scale(1)',
+              transition: 'box-shadow 0.2s, transform 0.2s',
             }}
           >
             <span style={{ fontSize: 28 }}>{option.emoji}</span>
           </button>
         ))}
       </div>
-
+      {logs.length === 0 && (
+        <div style={{
+          marginTop: 20,
+          color: 'var(--text-muted)',
+          textAlign: 'center',
+          fontSize: 15,
+        }}>
+          No moods logged yet. Check in to start tracking your feelings!
+        </div>
+      )}
       {mood && (
         <div style={styles.resultBox}>
           <h3>{mood} — {affirmations[mood]}</h3>
